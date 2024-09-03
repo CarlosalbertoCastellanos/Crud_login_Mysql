@@ -8,7 +8,7 @@ Instalación
 Clona este repositorio en tu máquina local.
 
 ```bash
-    git clone https://github.com/tu-usuario/nombre-del-repositorio.git
+    git clone https://github.com/CarlosalbertoCastellanos/Crud_login_Mysql
 ```
 
 ```bash
@@ -20,10 +20,6 @@ Instala las dependencias necesarias utilizando npm.
 ``` bash
     npm install
 ```
-
-
-Aquí tienes cómo puedes agregar en el README la sección para ejecutar el proyecto con Docker Compose:
-
 
 ## Ejecución con Docker Compose
 
@@ -44,7 +40,7 @@ Si prefieres ejecutar el proyecto utilizando Docker Compose, sigue estos pasos:
 4. Para detener los contenedores, puedes ejecutar:
 
    ```bash
-   docker-compose down
+    docker-compose up --build
    ```
 
    Esto apagará y eliminará los contenedores creados por Docker Compose.
