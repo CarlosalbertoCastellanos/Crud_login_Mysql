@@ -16,7 +16,7 @@ passport.use(
       try {
         console.log(req.body);
         const rows = await pool.query(
-          "SELECT * FROM smartphoneUser WHERE username = ?",
+          "SELECT * FROM user WHERE username = ?",
           [username]
         );
         if (rows.length > 0) {
@@ -62,7 +62,7 @@ passport.use(
           fullname,
         };
         newUser.password = await helpers.encryptPassword(password);
-        const result = await pool.query("INSERT INTO smartphoneUser SET ?", [
+        const result = await pool.query("INSERT INTO user SET ?", [
           newUser,
         ]);
         newUser.id = result.insertId;
@@ -80,7 +80,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const rows = await pool.query("SELECT * FROM smartphoneUser WHERE id = ?", [
+    const rows = await pool.query("SELECT * FROM user WHERE id = ?", [
       id,
     ]);
     done(null, rows[0]);
