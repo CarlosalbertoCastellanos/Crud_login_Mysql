@@ -2,8 +2,6 @@
 
 Este proyecto es una aplicación web construida con Node.js, que sigue una estructura de directorios organizada para facilitar el mantenimiento y la escalabilidad. A continuación, se describe la estructura del proyecto y se proporcionan instrucciones para configurarlo y ejecutarlo.
 
-
-
 Instalación
 Clona este repositorio en tu máquina local.
 
@@ -17,8 +15,14 @@ Clona este repositorio en tu máquina local.
 
 Instala las dependencias necesarias utilizando npm.
 
-``` bash
+```bash
     npm install
+```
+
+Ejecuta las migraciones.
+
+```bash
+    npm run migrate
 ```
 
 ## Ejecución con Docker Compose
