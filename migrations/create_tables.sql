@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS orderSmartphone(
     order_id INT(11) NOT NULL,  
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id),
-    FOREIGN KEY (smartphone_id) REFERENCES smartphone(id)
+    FOREIGN KEY (smartphone_id) REFERENCES smartphone(id),
     FOREIGN KEY (order_id) REFERENCES orderStore(id)
 );
 
