@@ -14,7 +14,7 @@ MODIFY id INT(11) NOT NULL AUTO_INCREMENT;
 CREATE TABLE smartphone(
     id INT(11) NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL,
-    marca VARCHAR(50) NOT NULL,
+    serie VARCHAR(50) NOT NULL,
     precio DECIMAL(10, 2) NOT NULL,
     imagen VARCHAR(255),
     descripcion TEXT,
