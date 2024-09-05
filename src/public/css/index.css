@@ -8,13 +8,11 @@ body {
 .index {
     width: 100vw;
     height: 100vh;
-    /* Ajustado para ocupar toda la altura de la ventana */
 }
 
 .masthead {
     color: white;
     min-height: 30rem;
-    /* Mantiene un mínimo de altura */
     width: 100%;
     padding-top: 8rem;
     background: url("/img/image.png") center center no-repeat;
@@ -37,12 +35,10 @@ body {
     .masthead {
         padding-top: 4rem;
         min-height: 20rem;
-        /* Ajuste de la altura mínima para pantallas pequeñas */
     }
 
     .index {
         height: auto;
-        /* Permite que el contenido crezca según sea necesario */
     }
 }
 
@@ -51,9 +47,7 @@ body {
     .masthead {
         padding-top: 2rem;
         min-height: 15rem;
-        /* Reduce la altura mínima para pantallas móviles */
         background-position: top center;
-        /* Ajusta la posición de la imagen de fondo */
     }
 }
 
