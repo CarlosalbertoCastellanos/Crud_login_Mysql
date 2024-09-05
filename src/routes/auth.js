@@ -1,6 +1,6 @@
 import express from "express";
 import passport from "passport";
-import { isLoggedIn, isNotLoggedIn } from "../lib/auth.js";
+import { isNotLoggedIn } from "../lib/auth.js";
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.post("/signup", isNotLoggedIn, (req, res, next) => {
     successRedirect: "/profile",
     failureRedirect: "/auth/signup",
     failureFlash: true,
-    successFlash: "Signup successful!", 
+    successFlash: "Signup successful!",
   })(req, res, next);
 });
 
