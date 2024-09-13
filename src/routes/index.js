@@ -1,6 +1,5 @@
 import express from "express";
-import passport from "passport";
-import { isLoggedIn, isNotLoggedIn } from "../lib/auth.js";
+import { isLoggedIn, } from "../lib/auth.js";
 
 const router = express.Router();
 
@@ -15,7 +14,7 @@ router.get("/profile", isLoggedIn, (req, res) => {
 router.get("/logout", isLoggedIn, (req, res, next) => {
   req.logout((err) => {
     if (err) {
-      return next(err); 
+      return next(err);
     }
     res.redirect("/auth/signin");
   });
