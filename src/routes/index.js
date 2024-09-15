@@ -1,6 +1,6 @@
 import express from "express";
-import { isLoggedIn, } from "../lib/auth.js";
-
+import passport from "passport";
+import { isLoggedIn, isNotLoggedIn } from "../lib/auth.js";
 const router = express.Router();
 
 router.get("/", isLoggedIn, (req, res) => {

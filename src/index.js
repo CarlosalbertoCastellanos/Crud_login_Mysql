@@ -16,6 +16,8 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 import routerApi from "./routes/api/index.js";
+import pass from "./lib/passport.js";
+
 
 // Configuración de Express
 app.set("port", process.env.PORT || 3000);
