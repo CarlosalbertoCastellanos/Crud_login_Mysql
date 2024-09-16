@@ -1,25 +1,26 @@
 import express from "express";
 import morgan from "morgan";
+import path from "path";
+import { fileURLToPath } from "url";
+import session from "express-session";
+import flash from "connect-flash";
+import passport from "passport";
+import { engine } from "express-handlebars";
+
+// Importa las rutas
 import router from "./routes/index.js";
 import links from "./routes/links.js";
 import auth from "./routes/auth.js";
-import { engine } from "express-handlebars";
+import routerApi from "./routes/api/index.js";
+import pass from "./lib/passport.js";
 import helpers from "./lib/handlebars.js";
-import path from "path";
-import { fileURLToPath } from "url";
-import passport from "passport";
-import session from "express-session";
-import flash from "connect-flash";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-import routerApi from "./routes/api/index.js";
-import pass from "./lib/passport.js";
 
-
-// Configuración de Express
+// Configuraciones de Express
 app.set("port", process.env.PORT || 3000);
 app.set("views", path.join(__dirname, "views"));
 
@@ -53,27 +54,22 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use((req, _, next) => {
-  app.locals.user = req.user;
+// Variables globales para las vistas
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
   next();
 });
 
-// * Use the router imports of views
+// Rutas
 app.use("/", router);
 app.use("/auth", auth);
 app.use("/links", links);
-app.use("/api", routerApi)
+app.use("/api", routerApi);
 
-// * Routers of api
-router.use("/api", routerApi)
-
-
-// * settings of statics files
+// Archivos estáticos
 app.use(express.static(path.join(__dirname, "public")));
 
-
-// * start  project
-
+// Iniciar servidor
 app.listen(app.get("port"), () => {
   console.log("Server running on port", app.get("port"));
 });
