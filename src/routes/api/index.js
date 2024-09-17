@@ -1,11 +1,13 @@
 
 import express from "express";
-import routersBuy from "./orderBuy/index.js";
 import statusCode from "../../utils/statusCode.js";
+// * Routes 
+import routerUser from "./user/index.js";
 
 const routerApi = express.Router();
-routerApi.get("/", (req, res) => {
+routerApi.get("/", (_, res) => {
     res.status(statusCode.ok).send("herllo");
 });
-routerApi.use("/orderBuy", routersBuy)
+
+routerApi.use("/user", routerUser);
 export default routerApi
