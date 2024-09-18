@@ -1,6 +1,8 @@
 
 import express from "express";
 import { getOrderBuy, getOrderBuyForUser, getOrderBuyForUserAndOrder, InsertOrderBuy } from "./OrderBuy.services.js";
+import { newOrderValidator } from "./OrderBuy.validator.js";
+import ExistSmartPhonesMiddleware from "./OrderBuyMiddleware.js";
 /**
  * @typedef {Object} RequestBody
  * @property {"OK"|"CANCEL"} order_status
@@ -8,7 +10,7 @@ import { getOrderBuy, getOrderBuyForUser, getOrderBuyForUserAndOrder, InsertOrde
  */
 const routerOrderBuy = express.Router({ mergeParams: true });
 
-routerOrderBuy.post("/", async (req, res) => {
+routerOrderBuy.post("/", [newOrderValidator], ExistSmartPhonesMiddleware, async (req, res) => {
     const idUser = req.params.userId;
     /**
      * @type { RequestBody }
@@ -17,10 +19,10 @@ routerOrderBuy.post("/", async (req, res) => {
     const { order_status: orderStatus, orderSmartphone } = req.body;
     await InsertOrderBuy(idUser, orderStatus, orderSmartphone)
 
-    res.status(200).send({ message: "example" })
+    res.status(200).send({ message: "User generated successful" })
 })
 
-routerOrderBuy.get("/orders", async (req, res) => {
+routerOrderBuy.get("/", async (req, res) => {
     const idUser = req.params.userId;
 
     const { limit, page } = req.query;
@@ -29,6 +31,13 @@ routerOrderBuy.get("/orders", async (req, res) => {
 
     res.status(200).send(dataOrderBuyUser)
 })
+routerOrderBuy.get("/orders", async (req, res) => {
+    const { limit, page } = req.query;
+
+    const dataOrderBuy = await getOrderBuy(limit, page)
+
+    res.status(200).send(dataOrderBuy)
+})
 
 routerOrderBuy.get("/:orderId", async (req, res) => {
     const { userId, orderId } = req.params;
@@ -36,11 +45,5 @@ routerOrderBuy.get("/:orderId", async (req, res) => {
 
     res.status(200).send(dataOrderBuyUser)
 })
-routerOrderBuy.get("/", async (req, res) => {
-    const { limit, page } = req.query;
 
-    const dataOrderBuy = await getOrderBuy(limit, page)
-
-    res.status(200).send(dataOrderBuy)
-})
 export default routerOrderBuy

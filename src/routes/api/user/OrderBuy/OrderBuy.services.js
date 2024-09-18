@@ -1,4 +1,5 @@
 import pool from "../../../../database.js"
+
 /**
  * 
  * @param {number} idUser
@@ -8,13 +9,18 @@ import pool from "../../../../database.js"
  */
 
 export const InsertOrderBuy = async (idUser, orderStatus, orderSmartphone) => {
-    const generateOrder = await pool.query("INSERT INTO orderStore (user_id, order_status)  VALUES (?, ?)", [idUser, orderStatus]);
+    // Insertar la orden
+    const generateOrder = await pool.query("INSERT INTO orderStore (user_id, order_status) VALUES (?, ?)", [idUser, orderStatus]);
     const idOrder = generateOrder.insertId;
-    const sqlInsertOrderSmartphone = "INSERT INTO orderSmartphone (quantity, user_id, smartphone_id, order_id) VALUES (?)";
+
+    // Preparar datos para la inserción múltiple
     const orderSmartphoneWithUser = orderSmartphone.map((data) => [data.quantity, idUser, data.smartphone_id, idOrder]);
-    const data = await pool.query(sqlInsertOrderSmartphone, orderSmartphoneWithUser);
-    return data
-}
+
+    // Insertar los smartphones asociados a la orden
+    const sqlInsertOrderSmartphone = "INSERT INTO orderSmartphone (quantity, user_id, smartphone_id, order_id) VALUES ?";
+    await pool.query(sqlInsertOrderSmartphone, [orderSmartphoneWithUser]);
+};
+
 
 /**
  * 
@@ -24,6 +30,7 @@ export const InsertOrderBuy = async (idUser, orderStatus, orderSmartphone) => {
 export const getOrderBuy = async (limit = 10, page = 0) => {
     const calculateOffset = limit * page
     const getFindOrder = await pool.query("SELECT a.id, a.user_id, b.nombre, b.serie, b.precio, a.order_id  from orderSmartphone as a LEFT JOIN smartphone as b ON a.smartphone_id = b.id LIMIT ? OFFSET ?", [+limit, +calculateOffset]);
+
     return getFindOrder
 }
 

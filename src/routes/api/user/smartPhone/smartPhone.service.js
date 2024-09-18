@@ -5,7 +5,10 @@ export const getAllSmartphone = async () => {
     return getFindOrder
 }
 export const getAllSmartphoneUser = async (idUser) => {
+    console.log(idUser);
+
     const getSmartPhone = await pool.query("SELECT * from smartphone WHERE user_id = ?", [idUser]);
+    console.log(getSmartPhone);
     return getSmartPhone
 }
 
@@ -46,4 +49,10 @@ export const updateSmartphone = async (smartphone, idSmartPhone) => {
     );
     return { message: "update smartPhone successfull" }
 
+}
+
+
+export const existSmartphoneId = async (id) => {
+    const smartphonesId = await pool.query("SELECT * from smartphone where id = ?", [id]);
+    return smartphonesId.length > 0
 }

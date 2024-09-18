@@ -3,7 +3,7 @@ import { getAllSmartphone, getAllSmartphoneUser, newSmartphoneUser, updateSmartp
 
 const routerSmartphone = express.Router({ mergeParams: true });
 
-
+// * get smartphone for user
 routerSmartphone.get("/", async (req, res) => {
     const idUser = req.params.userId;
     const smartPhone = await getAllSmartphoneUser(idUser)
