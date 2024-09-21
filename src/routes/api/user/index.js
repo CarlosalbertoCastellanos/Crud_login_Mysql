@@ -9,3 +9,5 @@ routerUser.use('/:userId/orderBuy', routerOrderBuy);
 routerUser.use('/:userId/smartphone', routerSmartphone);
 routerUser.use('/:userId/logout', routerNewUser);
 export default routerUser 
+import routerOrderBuy from "./OrderBuy/index.js";
+
