@@ -1,9 +1,9 @@
-name: Desplegar a Amazon Lightsail
+name: Desplegar a Amazon Lightsail Container Service
 
 on:
-  push:
-    branches:
-      - main  # Cambia según tu rama principal
+  release:
+    types:
+      - created
 
 jobs:
   build-and-deploy:
@@ -40,22 +40,22 @@ jobs:
         run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-      - name: Desplegar en Lightsail
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.LIGHTSAIL_INSTANCE_IP }}
-          username: bitnami
-          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
-          debug: true  # Habilitar modo de depuración
-          script: |
-            docker stop smarthphoneccastellanos || true
-            docker rm smarthphoneccastellanos || true
-            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_REGISTRY
-            docker pull $ECR_REGISTRY/$ECR_REPOSITORY:latest
-            docker run -d --name smarthphoneccastellanos -p 80:80 \
-              -e DB_HOST=${{ secrets.DB_HOST }} \
-              -e DB_USER=${{ secrets.DB_USER }} \
-              -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-              -e DB_NAME=${{ secrets.DB_NAME }} \
-              -e DB_PORT=${{ secrets.DB_PORT }} \
-              $ECR_REGISTRY/$ECR_REPOSITORY:latest
+      - name: Desplegar en Amazon Lightsail Container Service
+        run: |
+          aws lightsail update-container-service --service-name ${LIGHTSAIL_SERVICE_NAME} \
+            --public-endpoint '{"containerName":"smarthphoneccastellanos","containerPort":80,"healthCheck":{"path":"/","successCodes":"200"}}' \
+            --containers '{
+              "smarthphoneccastellanos": {
+                "image": "'$ECR_REGISTRY/$ECR_REPOSITORY:latest'",
+                "environment": {
+                  "DB_HOST": "'${{ secrets.DB_HOST }}'",
+                  "DB_USER": "'${{ secrets.DB_USER }}'",
+                  "DB_PASSWORD": "'${{ secrets.DB_PASSWORD }}'",
+                  "DB_NAME": "'${{ secrets.DB_NAME }}'",
+                  "DB_PORT": "'${{ secrets.DB_PORT }}'"
+                },
+                "ports": {
+                  "3000": "HTTP"
+                }
+              }
+            }'
