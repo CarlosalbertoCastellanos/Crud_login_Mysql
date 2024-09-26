@@ -41,14 +41,21 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
       - name: Desplegar en Lightsail
-        uses: appleboy/ssh-action@v0.1.4
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.LIGHTSAIL_INSTANCE_IP }}
           username: bitnami
           key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+          debug: true  # Habilitar modo de depuración
           script: |
             docker stop smarthphoneccastellanos || true
             docker rm smarthphoneccastellanos || true
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_REGISTRY
             docker pull $ECR_REGISTRY/$ECR_REPOSITORY:latest
-            docker run -d --name smarthphoneccastellanos -p 80:80 $ECR_REGISTRY/$ECR_REPOSITORY:latest
+            docker run -d --name smarthphoneccastellanos -p 80:80 \
+              -e DB_HOST=${{ secrets.DB_HOST }} \
+              -e DB_USER=${{ secrets.DB_USER }} \
+              -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+              -e DB_NAME=${{ secrets.DB_NAME }} \
+              -e DB_PORT=${{ secrets.DB_PORT }} \
+              $ECR_REGISTRY/$ECR_REPOSITORY:latest
