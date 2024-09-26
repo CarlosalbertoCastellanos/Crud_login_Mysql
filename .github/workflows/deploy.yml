@@ -42,7 +42,7 @@ jobs:
 
       - name: Desplegar en Amazon Lightsail Container Service
         run: |
-          aws lightsail update-container-service --service-name ${LIGHTSAIL_SERVICE_NAME} \
+          aws lightsail update-container-service --service-name container-service-1 \
             --public-endpoint '{"containerName":"smarthphoneccastellanos","containerPort":80,"healthCheck":{"path":"/","successCodes":"200"}}' \
             --containers '{
               "smarthphoneccastellanos": {
