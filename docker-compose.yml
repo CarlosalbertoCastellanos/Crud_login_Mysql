@@ -8,11 +8,10 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=example
-      - DB_NAME=smartphone
-      - DB_PORT=3306
+      - DB_HOST=db          # Usando 'db' como el nombre del servicio de la base de datos
+      - DB_USER=root        # Usuario root de MySQL
+      - DB_PASSWORD=example # Contraseña para el usuario root
+      - DB_NAME=smartphone  # Nombre de la base de datos
     depends_on:
       db:
         condition: service_healthy
@@ -21,16 +20,15 @@ services:
     image: mysql:8.0
     container_name: mysql_db
     environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: smartphone
-      MYSQL_USER: user
-      MYSQL_PASSWORD: userpassword
+      MYSQL_ROOT_PASSWORD: example   # Contraseña del usuario root
+      MYSQL_DATABASE: smartphone     # Nombre de la base de datos
+      MYSQL_USER: user               # Usuario adicional (opcional)
+      MYSQL_PASSWORD: userpassword   # Contraseña del usuario adicional (opcional)
     ports:
       - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "mysql -uroot -pexample -e 'SELECT 1'"] # Verifica la conexión de MySQL
       interval: 10s
       retries: 5
       start_period: 60s
       timeout: 5s
-
