@@ -64,6 +64,6 @@ jobs:
                 "containerPort":3000,
                 "healthCheck":{
                   "path":"/",
-                  "successCodes":"200"
+                  "successCodes":"200,302"
                 }
               }'
