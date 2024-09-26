@@ -42,20 +42,28 @@ jobs:
 
       - name: Desplegar en Amazon Lightsail Container Service
         run: |
-          aws lightsail update-container-service --service-name container-service-1 \
-            --public-endpoint '{"containerName":"smarthphoneccastellanos","containerPort":80,"healthCheck":{"path":"/","successCodes":"200"}}' \
-            --containers '{
-              "smarthphoneccastellanos": {
-                "image": "'$ECR_REGISTRY/$ECR_REPOSITORY:latest'",
-                "environment": {
-                  "DB_HOST": "'"${{ secrets.DB_HOST }}"'",
-                  "DB_USER": "'"${{ secrets.DB_USER }}"'",
-                  "DB_PASSWORD": "'"${{ secrets.DB_PASSWORD }}"'",
-                  "DB_NAME": "'"${{ secrets.DB_NAME }}"'",
-                  "DB_PORT": "'"${{ secrets.DB_PORT }}"'"
-                },
-                "ports": {
-                  "3000": "HTTP"
+            aws lightsail create-container-service-deployment \
+              --service-name container-service-1 \
+              --containers '{
+                "***ccastellanos": {
+                  "image": "'$ECR_REGISTRY/$ECR_REPOSITORY:latest'",
+                  "environment": {
+                    "DB_HOST": "'"***"'",
+                    "DB_USER": "'"***"'",
+                    "DB_PASSWORD": "'"***"'",
+                    "DB_NAME": "'"***"'",
+                    "DB_PORT": "'"***"'"
+                  },
+                  "ports": {
+                    "3000": "HTTP"
+                  }
                 }
-              }
-            }'
+              }' \
+              --public-endpoint '{
+                "containerName":"***ccastellanos",
+                "containerPort":80,
+                "healthCheck":{
+                  "path":"/",
+                  "successCodes":"200"
+                }
+              }'
